@@ -1,14 +1,16 @@
 from django.db import models
 
+
 class Tecnologias(models.Model):
     tecnologia = models.CharField(max_length=30)
 
     def __str__(self):
         return self.tecnologia
-    
+
     class Meta:
         verbose_name = 'Tecnologia'
         verbose_name_plural = 'Tecnologias'
+
 
 class Empresa(models.Model):
     choices_nicho_mercado = (
@@ -28,8 +30,9 @@ class Empresa(models.Model):
     bairro = models.CharField(max_length=200, blank=True)
     cidade = models.CharField(max_length=30)
     estado = models.CharField(max_length=40)
-    tecnologias = models.ManyToManyField(Tecnologias)    
-    nicho_mercado = models.CharField(max_length=3, choices=choices_nicho_mercado)
+    tecnologias = models.ManyToManyField(Tecnologias)
+    nicho_mercado = models.CharField(
+        max_length=3, choices=choices_nicho_mercado)
     caracteristica_empresa = models.TextField()
 
     def __str__(self):
@@ -37,6 +40,7 @@ class Empresa(models.Model):
 
     def qtd_vagas(self):
         return Vagas.objects.filter(empresa__id=self.id).count()
+
 
 class Vagas(models.Model):
     choices_experiencia = (
@@ -52,19 +56,21 @@ class Vagas(models.Model):
         ('D', 'Desafio técnico'),
         ('F', 'Finalizado')
     )
-    
+
     empresa = models.ForeignKey(Empresa, null=True, on_delete=models.SET_NULL)
     titulo = models.CharField(max_length=30)
-    nivel_experiencia = models.CharField(max_length=2, choices=choices_experiencia)
+    nivel_experiencia = models.CharField(
+        max_length=2, choices=choices_experiencia)
     data_final = models.DateField()
     email = models.EmailField()
     status = models.CharField(max_length=30, choices=choices_status)
     tecnologias_dominadas = models.ManyToManyField(Tecnologias)
-    tecnologias_estudar = models.ManyToManyField(Tecnologias, related_name='estudar')
+    tecnologias_estudar = models.ManyToManyField(
+        Tecnologias, related_name='estudar')
 
     # Tem como fazer a BARRA DE PROGRESSÃO 2 formas
     def progresso(self):
-        
+
         # 1 forma
         # if self.status == "I":
         #     return 20
@@ -76,9 +82,9 @@ class Vagas(models.Model):
         #     return 80
         # elif self.status == "F":
         #     return 100
-        
+
         # 2 Forma
-        x = [((i+1)*20,j[0]) for i, j in enumerate(self.choices_status)]
+        x = [((i+1)*20, j[0]) for i, j in enumerate(self.choices_status)]
         x = list(filter(lambda x: x[1] == self.status, x))[0][0]
         return x
 
