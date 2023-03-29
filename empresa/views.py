@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import Tecnologias, Empresa, Vagas
 from django.contrib import messages
 from django.contrib.messages import constants
+import requests
+
 
 def nova_empresa(request):
     if request.method == "GET":
@@ -11,13 +13,37 @@ def nova_empresa(request):
     elif request.method == 'POST':
         nome = request.POST.get('nome')
         email = request.POST.get('email')
+        logo = request.FILES.get('logo')
+        
+        cep = request.POST.get('cep')
+        response = requests.get(f'https://viacep.com.br/ws/{cep}/json/')
+        logradouro = request.POST.get('logradouro')        
+        bairro = request.POST.get('bairro')
         cidade = request.POST.get('cidade')
-        endereco = request.POST.get('endereco')
+        estado = request.POST.get('estado')
+        
         nicho = request.POST.get('nicho')
         tecnologias = request.POST.getlist('tecnologias')
         caracteristicas = request.POST.get('caracteristicas')
-        logo = request.FILES.get('logo')
-
+        
+        
+        
+        
+        if response.status_code == 200:
+            data = response.json()
+            context = {
+                'cep': data['cep'],
+                'logradouro': data['logradouro'],                
+                'bairro': data['bairro'],                
+                'cidade': data['localidade'],
+                'estado': data['uf']
+            }
+        else:
+            context = {
+                'error': 'CEP não encontrado'
+            }
+        
+        return render(request, 'nova_empresa.html', context)
         if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(cidade.strip()) == 0 or len(endereco.strip()) == 0 or len(nicho.strip()) == 0 or len(caracteristicas.strip()) == 0 or (not logo)): 
             messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
             return redirect('/home/nova_empresa')
@@ -33,10 +59,15 @@ def nova_empresa(request):
         empresa = Empresa(logo=logo,
                         nome=nome,
                         email=email,
-                        cidade=cidade,
-                        endereco=endereco,
+                        cep=cep,
+                        logradouro = logradouro,
+                        numero = numero,
+                        bairro = bairro,
+                        cidade = cidade,
+                        estado = estado,                        
                         nicho_mercado=nicho,
                         caracteristica_empresa=caracteristicas)
+        
         empresa.save()
         empresa.tecnologias.add(*tecnologias)
         empresa.save()

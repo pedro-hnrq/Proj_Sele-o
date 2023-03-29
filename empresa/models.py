@@ -5,6 +5,10 @@ class Tecnologias(models.Model):
 
     def __str__(self):
         return self.tecnologia
+    
+    class Meta:
+        verbose_name = 'Tecnologia'
+        verbose_name_plural = 'Tecnologias'
 
 class Empresa(models.Model):
     choices_nicho_mercado = (
@@ -13,14 +17,18 @@ class Empresa(models.Model):
         ('FS', 'FullStack'),
         ('M', 'Marketing'),
         ('N', 'Nutrição'),
-        ('D', 'Design')
+        ('D', 'Design'),
     )
     logo = models.ImageField(upload_to="logo_empresa", null=True)
     nome = models.CharField(max_length=30)
     email = models.EmailField()
+    cep = models.CharField(max_length=50, blank=True)
+    logradouro = models.CharField(max_length=200)
+    numero = models.CharField(max_length=10)
+    bairro = models.CharField(max_length=200, blank=True)
     cidade = models.CharField(max_length=30)
-    tecnologias = models.ManyToManyField(Tecnologias)
-    endereco = models.CharField(max_length=60)
+    estado = models.CharField(max_length=40)
+    tecnologias = models.ManyToManyField(Tecnologias)    
     nicho_mercado = models.CharField(max_length=3, choices=choices_nicho_mercado)
     caracteristica_empresa = models.TextField()
 
@@ -76,3 +84,7 @@ class Vagas(models.Model):
 
     def __str__(self):
         return self.titulo
+
+    class Meta:
+        verbose_name = 'Vaga'
+        verbose_name_plural = 'Vagas'

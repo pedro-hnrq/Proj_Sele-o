@@ -3,16 +3,23 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
+    <!-- CSS -->
     <link href="{% static 'base/css/base.css' %}" rel="stylesheet">   
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block 'title' %}{% endblock%}</title>
+    <title>SELE.JOBs |{% block 'title' %}{% endblock%}</title>
+    <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--    Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Fontes Google   -->
     {% block 'head' %}{% endblock%}
   </head>
   <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-nav">
-        <a class="navbar-brand" href="#">SELETI.VE</a>
+        <a class="navbar-brand" href="#">SELE.JOBs</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

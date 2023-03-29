@@ -6,6 +6,9 @@ __pycache__/
 
 # C extensions
 *.so
+media/
+media/logo_empresa
+
 
 # Distribution / packaging
 .Python
@@ -115,6 +118,13 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.venv
+venv
+.venv/bin
+.venv/lib
+
+# pyhton-decouple
+.env
 
 # Spyder project settings
 .spyderproject

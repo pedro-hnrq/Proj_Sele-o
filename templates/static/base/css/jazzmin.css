@@ -1,0 +1,54 @@
+/* Altera o fundo da página para preto */
+body {
+    background-color: #222222;
+}
+
+/* Altera a cor do texto padrão para branco */
+body, input, select, textarea, button {
+    color: #FFFFFF;
+}
+
+/* Altera a cor do fundo do topo do cabeçalho para cinza escuro */
+.top-nav {
+    background-color: #1D1F20;
+}
+
+/* Altera a cor do texto no topo do cabeçalho para branco */
+.top-nav .navbar {
+    color: #FFFFFF;
+}
+
+/* Altera a cor de fundo do menu lateral para cinza escuro */
+.sidebar-menu {
+    background-color: #1D1F20;
+}
+
+/* Altera a cor do ícone do menu lateral para branco */
+.sidebar-menu .treeview-menu > li > a > i {
+    color: #FFFFFF;
+}
+
+/* Altera a cor do texto do menu lateral para branco */
+.sidebar-menu .treeview-menu > li > a {
+    color: #FFFFFF;
+}
+
+/* Altera a cor de fundo do menu lateral para preto quando expandido */
+.sidebar-menu .treeview-menu > li.treeview-expanded > a {
+    background-color: #000000;
+}
+
+/* Altera a cor do texto do menu lateral para branco quando expandido */
+.sidebar-menu .treeview-menu > li.treeview-expanded > a {
+    color: #FFFFFF;
+}
+
+/* Altera a cor de fundo do rodapé para cinza escuro */
+.main-footer {
+    background-color: #1D1F20;
+}
+
+/* Altera a cor do texto do rodapé para branco */
+.main-footer p {
+    color: #FFFFFF;
+}

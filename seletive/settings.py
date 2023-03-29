@@ -1,6 +1,8 @@
 from pathlib import Path
 from django.contrib.messages import constants
 import os
+from decouple import config
+from .jazzmin import JAZZMIN_SETTINGS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +23,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Apps Ext
+    'jazzmin',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,7 +33,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'empresa',
-    'vagas'
+    'vagas',
+    
+    
 ]
 
 MIDDLEWARE = [
@@ -137,3 +144,25 @@ MESSAGE_TAGS = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST_USER = "devsi.pf@gmail.com.br"
+
+
+# Jazzmin - Settings
+JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+# ADMIN_SITE_HEADER = "SELE.JOBs | Admin"
+# ADMIN_SITE_TITLE = "SELE.JOBs | Admin"
+# ADMIN_SITE_LOGO = "static/base/img/discord_pur.icon" # Adicione o caminho para o seu logo
+# SITE_ID = 1
+# INSTALLED_APPS += ['django.contrib.sites']
+# MIDDLEWARE += ['django.contrib.sites.middleware.CurrentSiteMiddleware']
+# TEMPLATE_CONTEXT_PROCESSORS = [
+    
+#     'django.core.context_processors.request',
+#     'django.contrib.auth.context_processors.auth',
+#     'django.contrib.messages.context_processors.messages',
+#     'django.core.context_processors.debug',
+#     'django.core.context_processors.i18n',
+#     'django.core.context_processors.media',
+#     'django.core.context_processors.static',
+#     'django.core.context_processors.tz',
+#     'django.contrib.sites.context_processors.site',
+# ]
