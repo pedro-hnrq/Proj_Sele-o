@@ -1,24 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Tecnologias, Empresa, Vagas
 from django.contrib import messages
 from django.contrib.messages import constants
-import requests
+
 
 
 def nova_empresa(request):
     if request.method == "GET":
         techs = Tecnologias.objects.all()
+        
         return render(request, 'nova_empresa.html', {'techs': techs})
     elif request.method == 'POST':
+        
         nome = request.POST.get('nome')
         email = request.POST.get('email')
         logo = request.FILES.get('logo')
 
-        cep = request.POST.get('cep')
-        response = requests.get(f'https://viacep.com.br/ws/{cep}/json/')
+        cep = request.POST.get('cep')        
         logradouro = request.POST.get('logradouro')
         bairro = request.POST.get('bairro')
+        numero = request.POST.get('numero')
         cidade = request.POST.get('cidade')
         estado = request.POST.get('estado')
 
@@ -26,24 +28,11 @@ def nova_empresa(request):
         tecnologias = request.POST.getlist('tecnologias')
         caracteristicas = request.POST.get('caracteristicas')
 
-        if response.status_code == 200:
-            data = response.json()
-            context = {
-                'cep': data['cep'],
-                'logradouro': data['logradouro'],
-                'bairro': data['bairro'],
-                'cidade': data['localidade'],
-                'estado': data['uf']
-            }
-        else:
-            context = {
-                'error': 'CEP não encontrado'
-            }
-
-        return render(request, 'nova_empresa.html', context)
-        if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(cidade.strip()) == 0 or len(endereco.strip()) == 0 or len(nicho.strip()) == 0 or len(caracteristicas.strip()) == 0 or (not logo)):
-            messages.add_message(request, constants.ERROR,
-                                 'Preencha todos os campos')
+        
+        if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(cep.strip()) == 0 or len(logradouro.strip()) == 0 or
+            len(bairro.strip()) == 0 or len(numero.strip()) == 0 or len(cidade.strip()) == 0 or len(estado.strip()) == 0 or 
+            len(nicho.strip()) == 0 or len(caracteristicas.strip()) == 0 or (not logo)):
+            messages.add_message(request, constants.ERROR,'Preencha todos os campos')
             return redirect('/home/nova_empresa')
 
         if logo.size > 100_000_000:

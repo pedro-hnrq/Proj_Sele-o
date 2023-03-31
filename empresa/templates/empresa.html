@@ -18,7 +18,7 @@
                     {% endfor %}
                 {% endif %}
                 <h2 class="titulo">Gerenciar empresas</h2>
-                <a href="{% url 'nova_empresa' %}" class="btn-nova-empresa">Nova empresa</a>
+                <a href="{% url 'nova_empresa' %}" class="btn-nova-empresa"><i class='bx bxs-message-square-add' style='color:#3e5daa'></i>Nova empresa</a>
             </div>
             <div class="borda-box"></div>
             <div class="body-box">
@@ -40,15 +40,17 @@
                         </div>
                     
                     <div class="col-md-3">
-                        <input type="submit" value="FILTRAR" class="btn btn-lg btn-orange">
+                        <i class='bx bx-search-alt' style='color:rgba(191,146,45,0.89)'  ><input type="submit" value="FILTRAR" class="btn btn-lg btn-orange"></i>
                     </div>
                 </div>
                 </form>
 
                 <table class="tabela" cellpadding="20">
                     <tr>
+                        <th>Logo</th>
                         <th>Nome</th>
                         <th>Cidade</th>
+                        <th>UF</th>
                         <th>Tecnologias usadas</th>
                         <th>Quantidade de vagas</th>
                         <th>Ação</th>
@@ -56,12 +58,17 @@
 
                         {% for empresa in empresas %}
                         <tr {% if not forloop.counter|is_par %} class="tabela-linha" {% endif %} >
+                            <td width="20%">
+                                <a href="{% url 'empresa_unica' empresa.id %}"><img width="30%" src="{{empresa.logo.url}}"></a>
+                                
+                            </td>
                             <td>
                                 <a href="{% url 'empresa_unica' empresa.id %}">
                                 {{empresa.nome}}
                                 </a>
                             </td>
                             <td>{{empresa.cidade}}</td>
+                            <td>{{empresa.estado}}</td>
                             <td>
                                 <select class="form-select">
                                     {% for tech in empresa.tecnologias.all %}       

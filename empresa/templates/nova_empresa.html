@@ -4,6 +4,8 @@
 {% block 'head' %}
     <link href="{% static 'empresa/css/nova_empresa.css' %}" rel="stylesheet"> 
 
+    <!-- Validar CEP -->
+    <script src="{% static 'empresa/js/valida_cep.js' %}" defer></script>
 
 {% endblock %}
 
@@ -53,48 +55,67 @@
                         <h4>Endereço</h4>    
                         <div class="row">
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="cep">CEP:</label>
-                                <input type="text"class="form-control" id="cep input" name="cep" placeholder="0000-000" required pattern="[0-9]{8}" maxlength="8">
-                                <button type="submit">Consultar</button>
-                                <!-- <input type="text" class="form-control" id="cep" name="cep" required pattern="\d{5}-?\d{3}"> -->
-                                <!-- <input id="input" type="text" class="form-control" name="cep" placeholder="0000-000" maxlength="8"  pattern="\d{5}-?\d{3}"> -->
+                                <input type="text"class="form-control" onkeyup="preencherEndereco" id="cep" name="cep" placeholder="0000000" required pattern="[0-9]{8}" maxlength="8">
+                                
                             </div>
-                            {% if cep %}
-                                    <h2>Dados do endereço:</h2>
-                                    <ul>
-                                        <li><strong>CEP:</strong> {{ cep }}</li>
-                                        <li><strong>Logradouro:</strong> {{ logradouro }}</li>
-                                        <li><strong>Bairro:</strong> {{ bairro }}</li>
-                                        <li><strong>Cidade:</strong> {{ cidade }}</li>
-                                        <li><strong>Estado:</strong> {{ estado }}</li>
-                                    </ul>
-                            {% endif %}
-
+                            
                             <div class="col-md-8">
                                 <label>Rua:</label>
-                                <input id="input" type="text" class="form-control" name="logradouro" placeholder="{{ logradouro }}">
+                                <input id="logradouro" type="text" class="form-control" autocapitalize="{{ logradouro }}" name="logradouro" placeholder="Digite a rua...">
                             </div>
 
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <label>Nº:</label>
-                                <input id="input" type="text" class="form-control" name="numero" placeholder="{{numero}}">
+                                <input id="input" type="text" class="form-control" name="numero" placeholder="222">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label>Bairro:</label>
-                                <input id="input" type="text" class="form-control" name="bairro" placeholder="{{ bairro }}">
+                                <input id="bairro" type="text" class="form-control" name="bairro" placeholder="Digite o Bairro...">
                             </div>
                             
-                            <div class="col-md-7">
+                            <div class="col-md-6">
                                 <label>Cidade:</label>
-                                <input id="input" type="text" class="form-control" name="cidade" placeholder="{{ cidade }}">
+                                <input id="cidade" type="text" class="form-control" name="cidade" placeholder="Cidade...">
+                                
                             </div>
 
-                            <div class="col-md-1">
+                            <div class="col-md-3">
                                 <label>UF:</label>
-                                <input id="input" type="text" class="form-control" name="estado" placeholder="{{ estado }}">
+                                <!-- <input id="estado" type="text" class="form-control" name="estado" placeholder=""> -->
+                                <select class="form-control" id="estado" name="estado">
+                                    <option selected>Estado</option>
+                                        <option value="AC">Acre</option>
+                                        <option value="AL">Alagoas</option>
+                                        <option value="AP">Amapá</option>
+                                        <option value="AM">Amazonas</option>
+                                        <option value="BA">Bahia</option>
+                                        <option value="CE">Ceará</option>
+                                        <option value="DF">Distrito Federal</option>
+                                        <option value="ES">Espírito Santo</option>
+                                        <option value="GO">Goiás</option>
+                                        <option value="MA">Maranhão</option>
+                                        <option value="MT">Mato Grosso</option>
+                                        <option value="MS">Mato Grosso do Sul</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <option value="PA">Pará</option>
+                                        <option value="PB">Paraíba</option>
+                                        <option value="PR">Paraná</option>
+                                        <option value="PE">Pernambuco</option>
+                                        <option value="PI">Piauí</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="RN">Rio Grande do Norte</option>
+                                        <option value="RS">Rio Grande do Sul</option>
+                                        <option value="RO">Rondônia</option>
+                                        <option value="RR">Roraima</option>
+                                        <option value="SC">Santa Catarina</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="SE">Sergipe</option>
+                                        <option value="TO">Tocantins</option>
+                                </select>
                             </div>
 
                         </div>
@@ -144,6 +165,9 @@
             </div>
         </div>
     </div>
+
+   
+	
 
 
 {% endblock %}

@@ -9,7 +9,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "-> SELE.JOBs",
 
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "/base/img/discord_pur.ico", 
+    "site_logo": "/base/img/f4002257d80c1b2e97407aa33615a4fc-removebg-preview_MdRcPkf.ico", 
     
     'custom_css_path': 'base/css/jazzmin.css', 
 
