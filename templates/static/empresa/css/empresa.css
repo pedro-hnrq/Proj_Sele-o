@@ -6,13 +6,21 @@
 }
 
 .paragrafo{
+    /* font-size: 25px; */
+    font-family: 'Marko One', serif; 
+    font-weight: bold;
+}
+.endere{
     font-size: 25px;
+    font-family: 'serif'; 
+    font-weight: bold;
+
 }
 
 .btn-orange{
 
     background-color: #a95b37;
-    color: rgb(188, 178, 58);
+    color: rgb(255, 255, 255);
 }
 
 label{

@@ -26,15 +26,17 @@
 
             <div class="col-md">
                 <h1 class="titulo">{{empresa.nome}}</h1>
-                <p class="paragrafo" style="font-family: 'Marko One', serif; font-weight: bold;">Enderenço: {{empresa.endereco}}</p>
+                <h3 class="paragrafo">Enderenço:</h3>
+                <p class="endere">{{empresa.logradouro}}, {{empresa.numero}}, {{empresa.cidade}} - {{empresa.estado}}</p>
             </div>
 
 
 
         </div>
+        <hr>
         <br>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <label>Nicho de mercado:</label>
                 <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
             </div>
@@ -47,6 +49,10 @@
                     {% endfor %}
                 </select>
                 
+            </div>
+            <div class="col-md-3">
+                <label>Tipo de Trabalho:</label>
+                <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
             </div>
         </div>
         <br>
@@ -114,7 +120,8 @@
                     <div class="row">
                         <div class="col-md">
                             <label>Título:</label>
-                            <input type="text" name="titulo" class="form-control" placeholder="Digite o título da vaga...">
+                            <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
+                            <!-- <input type="text" name="titulo" class="form-control" placeholder="Digite o título da vaga..."> -->
                         </div>
 
                         <div class="col-md">
@@ -128,9 +135,13 @@
                         <div class="col-md">
                             <label>Tecnologias que já domino:</label>
                             <select name="tecnologias_domina" class="form-select" multiple>
-                                {% for tech in tecnologias %}
-                                    <option value="{{tech.id}}">{{tech}}</option>
+                                {% for tech in empresa.tecnologias.all %}   
+                                    <option>{{tech}}</option>
                                 {% endfor %}
+                                <!-- #Traz todos -->
+                                <!-- {% for tech in tecnologias %} -->
+                                  <!-- #  <option value="{{tech.id}}">{{tech}}</option> -->
+                                <!-- {% endfor %} -->
 
                             </select>
                         </div>
@@ -138,8 +149,8 @@
                         <div class="col-md">
                             <label>Tecnologias que não domino:</label>
                             <select name="tecnologias_nao_domina" class="form-select" multiple>
-                                {% for tech in tecnologias %}
-                                    <option value="{{tech.id}}">{{tech}}</option>
+                                {% for tech in empresa.tecnologias.all %}   
+                                    <option>{{tech}}</option>
                                 {% endfor %}
 
                             </select>
@@ -148,13 +159,35 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-md">
+                        <div class="col-md-6">
+                            <label>Tipo de Trabalho:</label>
+                            <select name="experiencia" class="form-select">
+                                <option value="P">Presencial</option>
+                                <option value="H">Híbrido</option>
+                                <option value="R">Remoto</option>                                
+                            </select>
+                        </div>
+                        <div class="col-md-6">
                             <label>Nível de experiência:</label>
                             <select name="experiencia" class="form-select">
+                                <option value="TE">Trainee/Estagiário</option>
                                 <option value="J">Júnior</option>
                                 <option value="P">Pleno</option>
                                 <option value="S">Sênior</option>
+                                <option value="E">Especialista</option>
+                                <option value="L">Líder/Gerente</option>
                             </select>
+                        </div>
+
+                        <div class="row">
+                            
+                            <
+                            <div class="col-md-2">
+                                <label>Contratação:</label><br>
+                                    <input name="contratacao" type="radio" value="CLT" id="M"><label for="CLT" align="right"  style="padding-right: 10px; font-family: 'Marko One', serif; font-weight: bold;"> CLT</label>
+                                    <input name="contratacao" type="radio" value="PJ" id="F"><label for="PJ" align="right" style="font-family: 'Marko One', serif; font-weight: bold;"> PJ</label>                                  
+                                </select>
+                            </div>
                         </div>
 
                         <div class="col-md">
@@ -168,11 +201,12 @@
                     <div class="row">
                         <div class="col-md">
                             <label>Empresa:</label>
-                            <select name="empresa" class="form-select">
-                                {% for empresa_iter in empresas %}
+                            <input disabled type="text" class="form-control" value="{{empresa.nome}}">
+                            <!-- <select name="empresa" class="form-select">
+                                {% for empresa_iter in empresas %}                                
                                     <option {% if empresa.id == empresa_iter.id %} selected {% endif %} value="{{empresa_iter.id}}">{{empresa_iter}}</option>
                                 {% endfor %}
-                            </select>
+                            </select> -->
                         </div>
        
                     </div>

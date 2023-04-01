@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Tecnologias(models.Model):
+    logo_tecn = models.ImageField(upload_to="logo_tecn", null=True)
     tecnologia = models.CharField(max_length=30)
 
     def __str__(self):
@@ -12,28 +13,34 @@ class Tecnologias(models.Model):
         verbose_name_plural = 'Tecnologias'
 
 
-class Empresa(models.Model):
-    choices_nicho_mercado = (
-        ('PB', 'Programador | Back-end'),
-        ('PF', 'Programador | Font-end'),
-        ('FS', 'FullStack'),
-        ('M', 'Marketing'),
-        ('N', 'Nutrição'),
-        ('D', 'Design'),
-    )
+class Empresa(models.Model):    
+    
     logo = models.ImageField(upload_to="logo_empresa", null=True)
     nome = models.CharField(max_length=30)
+    cnpj = models.CharField(max_length=18)
     email = models.EmailField()
+    caracteristica_empresa = models.TextField()
+    
     cep = models.CharField(max_length=10)
     logradouro = models.CharField(max_length=200)
     numero = models.CharField(max_length=6)
     bairro = models.CharField(max_length=200, blank=True)
     cidade = models.CharField(max_length=100, blank=True)
-    estado = models.CharField(max_length=5, blank=True)
+    estado = models.CharField(max_length=2, blank=True)
+    
+       
+    choices_nicho_mercado = (
+        ('PB', 'Programador | Back-end'),
+        ('PF', 'Programador | Font-end'),
+        ('FS', 'FullStack'),
+        ('M', 'Marketing'),        
+        ('D', 'Design'),
+        ('G', 'Gerente'),
+    )
     tecnologias = models.ManyToManyField(Tecnologias)
     nicho_mercado = models.CharField(
         max_length=3, choices=choices_nicho_mercado)
-    caracteristica_empresa = models.TextField()
+    
 
     def __str__(self):
         return self.nome
@@ -44,9 +51,18 @@ class Empresa(models.Model):
 
 class Vagas(models.Model):
     choices_experiencia = (
+        ('TE', 'Trainee/Estagiário'),
         ('J', 'Júnior'),
         ('P', 'Pleno'),
-        ('S', 'Sênior')
+        ('S', 'Sênior'),
+        ('E', 'Especialista'),
+        ('L', 'Líder')
+    )
+    contratacao = models.CharField(max_length=3)
+    choices_tipo_trabalho = (
+        ('P', 'Presencial'),
+        ('H', 'Híbrido'),
+        ('R', 'Remoto'),
     )
 
     choices_status = (

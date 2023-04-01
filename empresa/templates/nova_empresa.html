@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block 'title' %} Nova Empresa{% endblock%}
 {% block 'head' %}
     <link href="{% static 'empresa/css/nova_empresa.css' %}" rel="stylesheet"> 
 
     <!-- Validar CEP -->
     <script src="{% static 'empresa/js/valida_cep.js' %}" defer></script>
+    <!-- Validar CNPJ -->
+    <script src="{% static 'empresa/js/valida_cpnj.js' %}" defer></script>
+    
 
 {% endblock %}
 
@@ -29,26 +32,35 @@
             {% endif %} 
 
             <div class="body-box">
-                <form action="{% url 'nova_empresa' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <form action="{% url 'nova_empresa' %}" method="POST"  enctype="multipart/form-data">{% csrf_token %}
                     <div class="form-group">
                         <h4>Informações Básicas</h4>
                         <div class="row">
-                            <div class="col-md">
+                            <div class="col-md-4">
                                 <label>Logo:</label>
                                 <input id="input" type="file" class="form-control" name="logo">
                             </div>
+                            <div class="col-md-8">
+                                <label>Nome Fantasia:</label>
+                                <input id="input" type="text" class="form-control" name="nome" placeholder="Digite Nome Fantasia...">
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-md">
-                                <label>Nome Fantasia:</label>
-                                <input id="input" type="text" class="form-control" name="nome" placeholder="Digite seu nome...">
+                            <div class="col-md-5">
+                                <label>CNPJ:</label>
+                                <input id="cnpj" type="text" class="form-control input-cnpj" name="cnpj" placeholder="000.000.000/0000-00"  maxlength="18">
                             </div>
-
-                            <div class="col-md">
+                            <div class="col-md-7">
                                 <label>E-mail:</label>
                                 <input id="input" type="email" class="form-control" name="email" placeholder="email@gmail.com">
                             </div>
-                        </div>        
+                        </div>   
+                        <div class="row">
+                            <div class="col-md">
+                                <label>Informações da Empresa:</label>
+                                <textarea id="cnpf" name="caracteristicas" class="form-control"></textarea>
+                            </div>
+                        </div>     
                     </div>
                         
                     <div class="form-group">
@@ -57,7 +69,7 @@
 
                             <div class="col-md-2">
                                 <label for="cep">CEP:</label>
-                                <input type="text"class="form-control" onkeyup="preencherEndereco" id="cep" name="cep" placeholder="0000000" required pattern="[0-9]{8}" maxlength="8">
+                                <input type="text"class="form-control"  id="cep" name="cep" placeholder="0000000" required maxlength="9" oninput="preencherEndereco()">
                                 
                             </div>
                             
@@ -86,7 +98,7 @@
                             <div class="col-md-3">
                                 <label>UF:</label>
                                 <!-- <input id="estado" type="text" class="form-control" name="estado" placeholder=""> -->
-                                <select class="form-control" id="estado" name="estado">
+                                <select class="form-select" id="estado" name="estado">
                                     <option selected>Estado</option>
                                         <option value="AC">Acre</option>
                                         <option value="AL">Alagoas</option>
@@ -121,40 +133,36 @@
                         </div>
                     </div>  
                     
-                    <div class="form-group">
-                        <h4>Habilidades (Skills)</h4>
+                    <div class="form-group">              
                         
+                        
+                        <!-- <h4>Habilidades(Skills)</h4> -->
+                        <h4>Requisitos</h4>
                         <div class="row">
-                            <div class="col-md">
+                            <div class="col-md-6">
                                 <label>Nicho de mercado:</label>
-                                <select class="form-control" id="input" name="nicho">
+                                <select class="form-select" id="input" name="nicho">
+                                    <option value="FS">FullStack</option>
                                     <option value="PB">Programador | Back-end</option>
                                     <option value="PF">Programador | Font-end</option>
-                                    <option value="FS">FullStack</option>
-                                    <option value="M">Marketing</option>
-                                    <option value="N">Nutrição</option>
+                                    <option value="M">Marketing</option>                                    
                                     <option value="D">Design</option>
+                                    <option value="G">Gerente</option>
                                 </select>
                             </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md">
+                            <div class="col-md-6">
                                 <label>Tecnologias usadas:</label>
-                                <select id="input" class="form-control" name="tecnologias" multiple>                                
+                                <select id="id_tecnologias" class="form-select" name="tecnologias" multiple>                                
                                     {% for tech in techs %}
-                                        <option value="{{tech.id}}">{{tech}}</option>
-                                    {% endfor %}                         
+                                        <option value="{{ tech.id }}" data-img-src="{{ tech.logo_tecn.url }}">
+                                             {{ tech.tecnologia }}
+                                        </option>  
+                                    {% endfor %}                      
                                 </select>
                             </div>
-                        </div>
+                        </div>                        
                         
-                        <div class="row">
-                            <div class="col-md">
-                                <label>Característica da empresa:</label>
-                                <textarea id="input" name="caracteristicas" class="form-control"></textarea>
-                            </div>
-                        </div>
+                        
                         
                         
                 </div>        
@@ -165,7 +173,7 @@
             </div>
         </div>
     </div>
-
+    
    
 	
 

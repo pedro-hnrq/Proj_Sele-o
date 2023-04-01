@@ -11,6 +11,10 @@ label{
     padding-top: 5px;
     padding-bottom: 5px;
 }
+.input-cnpj.invalid {
+    background: rgb(252,176,69);
+    background: linear-gradient(90deg, rgba(252,176,69,1) 0%, rgba(214,91,44,1) 31%, rgba(185,25,25,1) 80%, rgba(180,73,58,1) 100%); 
+  }
 .form-control{
     padding-top: 10px;
     padding-bottom: 5px;

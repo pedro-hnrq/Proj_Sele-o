@@ -14,7 +14,15 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Fontes Google   -->
-    {% block 'head' %}{% endblock%}
+
+    <!-- Biblioteca jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Plugin Select2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <!-- Select jQuery e o plugin Select2 -->
+    <script src="{% static 'empresa/js/select_2.js' %}" defer></script>
+{% block 'head' %}{% endblock%}
   </head>
   <body>
 
