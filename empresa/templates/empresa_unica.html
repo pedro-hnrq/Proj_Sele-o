@@ -36,24 +36,31 @@
         <hr>
         <br>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <label>Nicho de mercado:</label>
                 <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
             </div>
 
-            <div class="col-md-3">
-                <label>Tecnologias usadas:</label>
-                <select class="form-select">
+            <div class="col-md-6">
+                <label>Tecnologias usadas:</label><br>
+                {% for tech in empresa.tecnologias.all %}
+                    {% if forloop.counter <= 4 %}
+                        <img src="{{ tech.logo_tecn.url }}" alt="{{ tech.tecnologia }}" title="{{ tech.tecnologia }}" width="50" height="50">
+                    {% elif forloop.counter == 5 %}
+                        <br>
+                        <img src="{{ tech.logo_tecn.url }}" alt="{{ tech.tecnologia }}" title="{{ tech.tecnologia }}" width="50" height="50">
+                    {% else %}
+                        <img src="{{ tech.logo_tecn.url }}" alt="{{ tech.tecnologia }}" title="{{ tech.tecnologia }}" width="50" height="50" style="display:none;">
+                    {% endif %}
+                {% endfor %}
+                <!-- <select class="form-select">
                     {% for tech in empresa.tecnologias.all %}   
                        <option>{{tech}}</option>
                     {% endfor %}
-                </select>
+                </select> -->
                 
             </div>
-            <div class="col-md-3">
-                <label>Tipo de Trabalho:</label>
-                <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
-            </div>
+            
         </div>
         <br>
         <div class="row">
@@ -181,7 +188,7 @@
 
                         <div class="row">
                             
-                            <
+                            
                             <div class="col-md-2">
                                 <label>Contratação:</label><br>
                                     <input name="contratacao" type="radio" value="CLT" id="M"><label for="CLT" align="right"  style="padding-right: 10px; font-family: 'Marko One', serif; font-weight: bold;"> CLT</label>

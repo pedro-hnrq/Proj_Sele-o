@@ -52,7 +52,7 @@
 
                 <table class="tabela" cellpadding="20">
                     <tr>
-                        <th>Logo</th>
+                        <th class="tabela-linha tabela-logo">Logo</th>
                         <th>Nome</th>
                         <th>Cidade</th>
                         <th>UF</th>
@@ -62,7 +62,7 @@
                     </tr>
 
                         {% for empresa in empresas %}
-                        <tr {% if not forloop.counter|is_par %} class="tabela-linha" {% endif %} >
+                        <tr {% if not forloop.counter|is_par %} class="tabela-linha tabela-logo " {% endif %} >
                             <td width="20%">
                                 <a href="{% url 'empresa_unica' empresa.id %}"><img width="30%" src="{{empresa.logo.url}}"></a>
                                 
@@ -99,10 +99,11 @@
                             </td>
                             <td>
                                 <a href="{% url 'excluir_empresa' empresa.id %}" ><i class='bx bxs-message-square-x' style='color:#bf1b1d; font-size: 45px;'  ></i></a>
-                                <a href="{% url 'editar_empresa' empresa.id %}" ><i class='bx bxs-message-square-edit' style='color:#1c6d62; font-size: 45px;'  ></i></a>
+                                <a href="{% url 'editar_empresa' empresa.id %}"><i class='bx bxs-message-square-edit' style='color:#1c6d62; font-size: 45px;'  ></i></a>
                                 
                             </td>
                         </tr>
+                        
                         {% endfor %}
                 </table>
             </div>
@@ -111,6 +112,8 @@
             
 
         </div>
+        
     </div>
-
+    
+    
 {% endblock%}

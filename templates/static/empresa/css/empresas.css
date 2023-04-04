@@ -88,8 +88,6 @@ button.btn-orange {
 }
 
 
-
-
 .tabela{
     width: 100%;
     margin-top: 20px;
@@ -106,4 +104,9 @@ button.btn-orange {
     padding: 10px;
     border-radius: 10px;
     font-weight: bold;
+}
+
+.tabela-logo{
+    justify-content: center;
+    align-items: center;   
 }

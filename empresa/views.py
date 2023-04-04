@@ -124,11 +124,10 @@ def editar_empresa(request, id):
         tecnologias = request.POST.getlist('tecnologias')
         caracteristicas = request.POST.get('caracteristicas')
 
-        if not all([nome.strip(), email.strip(), cep.strip(), logradouro.strip(), bairro.strip(), 
-                    numero.strip(), cidade.strip(), estado.strip(), nicho.strip(),
-                    caracteristicas.strip()]):
+        if not all([nome, cnpj, email, cep, logradouro, bairro, numero, cidade, estado, nicho, tecnologias, caracteristicas]) or not all([campo.strip() for campo in [nome, cnpj, email, cep, logradouro, bairro, numero, cidade, estado, nicho, caracteristicas] if campo]):
             messages.add_message(request, constants.ERROR,'Preencha todos os campos')
             return redirect(f'/home/editar_empresa/{id}')
+
 
         if logo:
             if logo.size > 100_000_000:

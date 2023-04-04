@@ -8,7 +8,8 @@
     <script src="{% static 'empresa/js/valida_cep.js' %}" defer></script>
     <!-- Validar CNPJ -->
     <script src="{% static 'empresa/js/valida_cpnj.js' %}" defer></script>
-    
+    <!-- Imagem Logo -->
+    <script src="{% static 'empresa/js/img.js' %}" defer></script>
 
 {% endblock %}
 
@@ -36,13 +37,18 @@
                     <div class="form-group">
                         <h4>Informações Básicas</h4>
                         <div class="row">
-                            <div class="col-md-4">
-                                <label>Logo:</label>
-                                <input id="input" type="file" class="form-control" name="logo">
+                            <div class="col-md-4 align-items-center d-flex">
+                              <label class="mr-2">Logo:</label>
+                              {% if empresa.logo %}
+                                <img src="{{ empresa.logo.url }}" alt="{{ empresa.nome }}" width="100" class="img-fluid">
+                              {% endif %}
+                              <label for="img" class="ml-2"><i class='bx bxs-cloud-upload bx-md'></i></label>
+                              <input id="img" type="file" class="form-control d-none" name="logo" onchange="mostrarNomeArquivo()">
+                              <span id="nome-arquivo"></span>
                             </div>
                             <div class="col-md-8">
-                                <label>Nome Fantasia:</label>
-                                <input id="input" type="text" class="form-control" name="nome" placeholder="Digite Nome Fantasia...">
+                              <label>Nome Fantasia:</label>
+                              <input id="input" type="text" class="form-control" name="nome" value="{{ empresa.nome }}" placeholder="Digite Nome Fantasia...">
                             </div>
                         </div>
                         <div class="row">
