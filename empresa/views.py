@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from .models import Tecnologias, Empresa, Vagas
+from .models import Tecnologias, Empresa, Vagas, Profissao
 from django.contrib import messages
 from django.contrib.messages import constants
 
@@ -8,8 +8,9 @@ from django.contrib.messages import constants
 
 def nova_empresa(request):
     if request.method == "GET":
-        techs = Tecnologias.objects.all()        
-        return render(request, 'nova_empresa.html', {'techs': techs})
+        techs = Tecnologias.objects.all()
+        prof = Profissao.objects.all()        
+        return render(request, 'nova_empresa.html', {'techs': techs, 'prof':prof})
     elif request.method == 'POST':
         
         nome = request.POST.get('nome')
@@ -24,14 +25,14 @@ def nova_empresa(request):
         cidade = request.POST.get('cidade')
         estado = request.POST.get('estado')
 
-        nicho = request.POST.get('nicho')
+        profissoes = request.POST.getlist('profissoes')
         tecnologias = request.POST.getlist('tecnologias')
         caracteristicas = request.POST.get('caracteristicas')
 
         
         if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(cep.strip()) == 0 or len(logradouro.strip()) == 0 or
-            len(bairro.strip()) == 0 or len(numero.strip()) == 0 or len(cidade.strip()) == 0 or len(estado.strip()) == 0 or 
-            len(nicho.strip()) == 0 or len(caracteristicas.strip()) == 0 or (not logo)):
+            len(bairro.strip()) == 0 or len(numero.strip()) == 0 or len(cidade.strip()) == 0 or len(estado.strip()) == 0
+            or len(caracteristicas.strip()) == 0 or (not logo)):
             messages.add_message(request, constants.ERROR,'Preencha todos os campos')
             return redirect('/home/nova_empresa')
 
@@ -40,10 +41,7 @@ def nova_empresa(request):
                                  'A logo da empresa deve ter menos de 10MB')
             return redirect('/home/nova_empresa')
 
-        if nicho not in [i[0] for i in Empresa.choices_nicho_mercado]:
-            messages.add_message(request, constants.ERROR,
-                                 'Nicho de mercado inválido')
-            return redirect('/home/nova_empresa')
+        
 
         empresa = Empresa(logo=logo,
                           nome=nome,
@@ -54,12 +52,12 @@ def nova_empresa(request):
                           numero=numero,
                           bairro=bairro,
                           cidade=cidade,
-                          estado=estado,
-                          nicho_mercado=nicho,
+                          estado=estado,                          
                           caracteristica_empresa=caracteristicas)
 
         empresa.save()
         empresa.tecnologias.add(*tecnologias)
+        empresa.profissao_empresa.add(*profissoes)
         empresa.save()
         messages.add_message(request, constants.SUCCESS,
                              'Empresa cadastrada com sucesso')
@@ -105,7 +103,8 @@ def editar_empresa(request, id):
 
     if request.method == "GET":
         techs = Tecnologias.objects.all()        
-        return render(request, 'editar_empresa.html', {'empresa': empresa, 'techs': techs})
+        prof = Profissao.objects.all()               
+        return render(request, 'editar_empresa.html', {'empresa': empresa, 'techs': techs, 'prof': prof})
     
     elif request.method == 'POST':
         nome = request.POST.get('nome')
@@ -120,11 +119,11 @@ def editar_empresa(request, id):
         cidade = request.POST.get('cidade')
         estado = request.POST.get('estado')
 
-        nicho = request.POST.get('nicho')
+        profissoes = request.POST.getlist('profissoes')
         tecnologias = request.POST.getlist('tecnologias')
         caracteristicas = request.POST.get('caracteristicas')
-
-        if not all([nome, cnpj, email, cep, logradouro, bairro, numero, cidade, estado, nicho, tecnologias, caracteristicas]) or not all([campo.strip() for campo in [nome, cnpj, email, cep, logradouro, bairro, numero, cidade, estado, nicho, caracteristicas] if campo]):
+        
+        if not all([nome, cnpj, email, cep, logradouro, bairro, numero, cidade, estado, profissoes, tecnologias, caracteristicas]) or not all([campo.strip() for campo in [nome, cnpj, email, cep, logradouro, bairro, numero, cidade, estado, caracteristicas] if campo]) or not all([campo.strip() for campo in profissoes if campo]) or not all([campo.strip() for campo in tecnologias if campo]):
             messages.add_message(request, constants.ERROR,'Preencha todos os campos')
             return redirect(f'/home/editar_empresa/{id}')
 
@@ -135,10 +134,7 @@ def editar_empresa(request, id):
                                      'A logo da empresa deve ter menos de 10MB')
                 return redirect(f'/home/editar_empresa/{id}')
 
-        if nicho not in [i[0] for i in Empresa.choices_nicho_mercado]:
-            messages.add_message(request, constants.ERROR,'Nicho de mercado inválido')
-            return redirect(f'/home/editar_empresa/{id}')
-
+        
         empresa.logo = logo if logo else empresa.logo
         empresa.nome = nome
         empresa.cnpj = cnpj
@@ -148,12 +144,13 @@ def editar_empresa(request, id):
         empresa.numero = numero
         empresa.bairro = bairro
         empresa.cidade = cidade
-        empresa.estado = estado
-        empresa.nicho_mercado = nicho
+        empresa.estado = estado        
         empresa.caracteristica_empresa = caracteristicas
-
+       
+        
         empresa.save()
         empresa.tecnologias.set(tecnologias)
+        empresa.profissao_empresa.set(profissoes)
         messages.add_message(request, constants.SUCCESS,
                              'Empresa atualizada com sucesso')
-        return redirect('/home/empresas')
+        return redirect(f'/home/empresas/')

@@ -12,6 +12,12 @@ class Tecnologias(models.Model):
         verbose_name = 'Tecnologia'
         verbose_name_plural = 'Tecnologias'
 
+class Profissao(models.Model):
+    logo_profissao = models.ImageField(upload_to="logo_tecn", null=True)
+    profissao = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.profissao 
 
 class Empresa(models.Model):    
     
@@ -28,26 +34,18 @@ class Empresa(models.Model):
     cidade = models.CharField(max_length=100, blank=True)
     estado = models.CharField(max_length=2, blank=True)
     
-       
-    choices_nicho_mercado = (
-        ('PB', 'Programador | Back-end'),
-        ('PF', 'Programador | Font-end'),
-        ('FS', 'FullStack'),
-        ('M', 'Marketing'),        
-        ('D', 'Design'),
-        ('G', 'Gerente'),
-    )
-    tecnologias = models.ManyToManyField(Tecnologias)
-    nicho_mercado = models.CharField(
-        max_length=3, choices=choices_nicho_mercado)
     
-
+   
+    tecnologias = models.ManyToManyField(Tecnologias)
+    profissao_empresa = models.ManyToManyField(Profissao) 
+    
     def __str__(self):
         return self.nome
 
     def qtd_vagas(self):
         return Vagas.objects.filter(empresa__id=self.id).count()
 
+   
 
 class Vagas(models.Model):
     choices_experiencia = (

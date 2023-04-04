@@ -54,9 +54,10 @@
                     <tr>
                         <th class="tabela-linha tabela-logo">Logo</th>
                         <th>Nome</th>
-                        <th>Cidade</th>
-                        <th>UF</th>
-                        <th>Tecnologias usadas</th>
+                        <th>Cidade - UF</th>
+                        
+                        <th>Profissionais</th>
+                        <th>Tecnologias</th>
                         <th>Quantidade de vagas</th>
                         <th>Ação</th>
                     </tr>
@@ -72,8 +73,22 @@
                                 {{empresa.nome}}
                                 </a>
                             </td>
-                            <td>{{empresa.cidade}}</td>
-                            <td>{{empresa.estado}}</td>
+                            <td>{{empresa.cidade}} - {{empresa.estado}}</td>
+                            
+                            <td>
+                                
+                                {% for profissao in empresa.profissao_empresa.all %}
+                                    {% if forloop.counter <= 4 %}
+                                        <img src="{{ profissao.logo_profissao.url }}" alt="{{ profissao.profissao }}" title="{{ profissao.profissao }}" width="50" height="50">
+                                    {% elif forloop.counter == 5 %}
+                                        <br>
+                                        <img src="{{ profissao.logo_profissao.url }}" alt="{{ profissao.profissao }}" title="{{ profissao.profissao }}" width="50" height="50">
+                                    {% else %}
+                                        <img src="{{ profissao.logo_profissao.url }}" alt="{{ profissao.profissao }}" title="{{ profissao.profissao }}" width="50" height="50" style="display:none;">
+                                    {% endif %}
+                                {% endfor %}
+                           
+                            </td>
                             <td>
                                 
                                     {% for tech in empresa.tecnologias.all %}

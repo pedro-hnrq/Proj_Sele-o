@@ -142,19 +142,18 @@
                                     <h4>Requisitos</h4>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label>Nicho de mercado:</label>
-                                            <select class="form-select" id="nicho" name="nicho" >
-                                                
-                                                <option value="FS" {% if empresa.nicho_mercado == 'FS' %}selected{% endif %}>FullStack</option>
-                                                <option value="PB" {% if empresa.nicho_mercado == 'PB' %}selected{% endif %}>Programador | Back-end</option>
-                                                <option value="PF" {% if empresa.nicho_mercado == 'PF' %}selected{% endif %}>Programador | Font-end</option>
-                                                <option value="M" {% if empresa.nicho_mercado == 'M' %}selected{% endif %}>Marketing</option>
-                                                <option value="D" {% if empresa.nicho_mercado == 'D' %}selected{% endif %}>Design</option>
-                                                <option value="G" {% if empresa.nicho_mercado == 'G' %}selected{% endif %}>Gerente</option>
-                                              </select>
+                                            <label>Profissões:</label>
+                                            <select class="form-select" id="id_profissao" name="profissoes" multiple>
+                                                {% for profissao in prof %}
+                                                    <option value="{{ profissao.id }}" data-img-src="{{ profissao.logo_profissao.url }}"
+                                                        {% if profissao in empresa.profissao_empresa.all %} selected {% endif %}>
+                                                        {{ profissao.profissao }}
+                                                    </option>
+                                                {% endfor %}                                      
+                                            </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <label>Tecnologias usadas:</label>
+                                            <label>Tecnologias:</label>
                                             <select id="id_tecnologias" class="form-select" name="tecnologias" multiple>                                
                                                 {% for tech in techs %}
                                                 <option value="{{ tech.id }}" data-img-src="{{ tech.logo_tecn.url }}"

@@ -2,6 +2,9 @@ $(document).ready(function() {
     $('#id_tecnologias').select2({
         templateResult: formatOption
     });
+    $('#id_profissao').select2({
+        templateResult: formatOption
+    });
 });
 
 function formatOption(option) {
