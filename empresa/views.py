@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from .models import Tecnologias, Empresa, Vagas, Profissao
 from django.contrib import messages
 from django.contrib.messages import constants
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def nova_empresa(request):
@@ -67,8 +67,21 @@ def nova_empresa(request):
 def empresas(request):
     tecnologias_filtrar = request.GET.get('tecnologias')
     nome_filtrar = request.GET.get('nome')
+    
     empresas = Empresa.objects.all()
+    
+    # 5 empresas por página
+    paginator = Paginator(empresas, 3)
+    # número da página atual
+    pagina = request.GET.get('page')
 
+    try:
+        empresas = paginator.page(pagina)
+    except PageNotAnInteger:
+         empresas = paginator.page(1)
+    except EmptyPage:
+        empresas = paginator.page(paginator.num_pages)
+        
     if tecnologias_filtrar:
         empresas = empresas.filter(tecnologias=tecnologias_filtrar)
 

@@ -1,3 +1,63 @@
+
+
+.input-box {
+  position: relative;
+  height: 76px;
+  max-width: 750px;
+  width: 100%;
+  background: #f3efef;
+  margin: 20px 180px 0;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.input-box .bx-search-alt,
+.input-box .button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.input-box .bx-search-alt {
+  left: 60px;
+  font-size: 30px;
+  color: #707070;
+}
+.input-box input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    font-size: 20px;
+    font-weight: 400;
+    border: none;
+    padding: 0 155px 0 65px;
+    background-color: transparent;
+  }
+  .input-box  {
+    right: 20px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    
+    cursor: pointer;
+  }
+  .input-box  {
+    transform: translateY(-50%) scale(0.98);
+}
+@media screen and (max-width: 500px) {
+    .input-box {
+      height: 66px;
+      margin: 0 8px;
+    }
+    .input-box .bx-search-alt {
+      left: 12px;
+      font-size: 25px;
+    }
+    .input-box {
+      padding: 0 112px 0 50px;
+    }}
+
 .wrapper {
     margin-top: 3%;
     display: flex;
@@ -24,7 +84,7 @@ button.btn-orange {
     overflow: hidden;
 }
 
-.bx-search-alt{
+/* .bx-search-alt{
     margin-top: -10px;        
     font-size: 45px;
     color: rgba(191, 146, 45, 0.89);
@@ -37,7 +97,7 @@ button.btn-orange {
     background-color: #ebab3d;
     border-color:  #ffad2b;
     color: white;
-}
+} */
 .box {
     
     width: 85vw;
@@ -90,7 +150,7 @@ button.btn-orange {
 
 .tabela{
     width: 100%;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .tabela-linha{
@@ -105,8 +165,66 @@ button.btn-orange {
     border-radius: 10px;
     font-weight: bold;
 }
-
-.tabela-logo{
-    justify-content: center;
-    align-items: center;   
+/* Centraliza as informações da LOGO e QTE VAGAS */
+.tabela-centralizada {
+  margin: 0 auto;
 }
+
+.tabela-centralizada .td_sy {
+  text-align: center;
+}
+/* Centraliza o cabeçalho */
+.tabela-header th:nth-child(6),
+.tabela-header th:last-child {
+  text-align: center;
+}
+
+/* Aproximação das colunas */
+.img_name:first-child {
+  padding-right: 10px;
+}.img_name:last-child {
+    padding-left: 0;
+}
+
+
+/* Paginação */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .pagination li {
+    margin: 0 2px;
+  }
+  
+  .pagination li span {
+    margin: 0 5px;
+  }
+  
+  .pagination li.active a {
+    font-weight: bold;
+  }
+  
+  .pagination a {
+    display: block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #333333;
+    text-decoration: none;
+  }
+  
+  .pagination a:hover {
+    background-color: #eeeeee;
+  }
