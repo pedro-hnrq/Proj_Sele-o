@@ -28,21 +28,43 @@
                 <h1 class="titulo">{{empresa.nome}}</h1>
                 <h3 class="paragrafo">Enderenço:</h3>
                 <p class="endere">{{empresa.logradouro}}, {{empresa.numero}}, {{empresa.cidade}} - {{empresa.estado}}</p>
+                
+                <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-lg btn-orange">Criar vaga</a>
             </div>
-
-
-
+            
         </div>
+        
         <hr>
         <br>
         <div class="row">
+            <div class="col-md-12">
+                <label>Sob a Empresa:</label>
+                <textarea disabled class="form-control">{{empresa.caracteristica_empresa}}</textarea>
+            </div>
+
+            <div class="col-md-3">
+                
+                
+            </div>
+        </div><br>
+        <div class="row">
             <div class="col-md-6">
-                <label>Nicho de mercado:</label>
-                <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
+                <label>Profissionais:</label><br>
+                {% for profissao in empresa.profissao_empresa.all %}
+                    {% if forloop.counter <= 4 %}
+                        <img src="{{ profissao.logo_profissao.url }}" alt="{{ profissao.profissao }}" title="{{ profissao.profissao }}" width="50" height="50">
+                        
+                    {% elif forloop.counter == 5 %}
+                        <br>
+                        <img src="{{ profissao.logo_profissao.url }}" alt="{{ profissao.profissao }}" title="{{ profissao.profissao }}" width="50" height="50">
+                    {% else %}
+                        <img src="{{ profissao.logo_profissao.url }}" alt="{{ profissao.profissao }}" title="{{ profissao.profissao }}" width="50" height="50" style="display:none;">
+                    {% endif %}
+                {% endfor %}
             </div>
 
             <div class="col-md-6">
-                <label>Tecnologias usadas:</label><br>
+                <label>Tecnologias:</label><br>
                 {% for tech in empresa.tecnologias.all %}
                     {% if forloop.counter <= 4 %}
                         <img src="{{ tech.logo_tecn.url }}" alt="{{ tech.tecnologia }}" title="{{ tech.tecnologia }}" width="50" height="50">
@@ -61,23 +83,11 @@
                 
             </div>
             
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-7">
-                <label>Características da empresa:</label>
-                <textarea disabled class="form-control">{{empresa.caracteristica_empresa}}</textarea>
-            </div>
+        </div>        
 
-            <div class="col-md-3">
-                
-                
-            </div>
-        </div>
+        <hr><h3>VAGAS</h3>
 
-        <hr>
-
-        <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-lg btn-orange">Nova vaga</a>
+        
 
         <div class="row">
             {% for vaga in vagas %}
@@ -125,25 +135,26 @@
             <div class="modal-body">
                 <form action="{% url 'nova_vaga' %}" method="POST"> {% csrf_token %}
                     <div class="row">
-                        <div class="col-md">
-                            <label>Título:</label>
-                            <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
-                            <!-- <input type="text" name="titulo" class="form-control" placeholder="Digite o título da vaga..."> -->
+                        <div class="col-md-6">
+                            <label>Empresa:</label>
+                            <input disabled type="text" class="form-control" value="{{empresa.nome}}">
+                            
                         </div>
 
-                        <div class="col-md">
-                            <label>Email:</label>
-                            <input type="email" name="email" class="form-control" placeholder="email@email.com.br">
+                        <div class="col-md-6">
+                            <label>E-mail:</label>
+                            <input type="email" name="email" class="form-control" placeholder="empresa@rh.com.br">
+                            
                         </div>
                         
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md">
-                            <label>Tecnologias que já domino:</label>
-                            <select name="tecnologias_domina" class="form-select" multiple>
-                                {% for tech in empresa.tecnologias.all %}   
-                                    <option>{{tech}}</option>
+                            <label>Profissao:</label>
+                            <select  name="profissao" class="form-select">
+                                {% for prof in empresa.profissao_empresa.all %}   
+                                    <option>{{prof}}</option>
                                 {% endfor %}
                                 <!-- #Traz todos -->
                                 <!-- {% for tech in tecnologias %} -->
@@ -154,10 +165,13 @@
                         </div>
 
                         <div class="col-md">
-                            <label>Tecnologias que não domino:</label>
-                            <select name="tecnologias_nao_domina" class="form-select" multiple>
+                            <label>Tecnologias:</label>
+                            <select id="id_tecnologias"  name="tecnologia" class="form-select" multiple>
                                 {% for tech in empresa.tecnologias.all %}   
-                                    <option>{{tech}}</option>
+                                <option value="{{ tech.id }}" data-img-src="{{ tech.logo_tecn.url }}"
+                                    {% if tech in empresa.tecnologias.all %} selected {% endif %}>
+                                    {{ tech.tecnologia }}
+                                </option>
                                 {% endfor %}
 
                             </select>
@@ -166,14 +180,7 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-md-6">
-                            <label>Tipo de Trabalho:</label>
-                            <select name="experiencia" class="form-select">
-                                <option value="P">Presencial</option>
-                                <option value="H">Híbrido</option>
-                                <option value="R">Remoto</option>                                
-                            </select>
-                        </div>
+                        
                         <div class="col-md-6">
                             <label>Nível de experiência:</label>
                             <select name="experiencia" class="form-select">
@@ -185,42 +192,54 @@
                                 <option value="L">Líder/Gerente</option>
                             </select>
                         </div>
-
+                        <div class="col-md-6">
+                            <label>Salário:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" name="salario" pattern="[0-9]*" inputmode="numeric"> 
+                            </div>
+                        </div>
+                    </div>
+                        <br>
                         <div class="row">
                             
-                            
-                            <div class="col-md-2">
+                            <div class="col-md-6">
+                                <label>Tipo de Trabalho:</label>
+                                <select name="tipo_trabalho" class="form-select">
+                                    <option value="P">Presencial</option>
+                                    <option value="H">Híbrido</option>
+                                    <option value="R">Remoto</option>                                
+                                </select>
+                            </div>
+                            <div class="col-md-6">
                                 <label>Contratação:</label><br>
                                     <input name="contratacao" type="radio" value="CLT" id="M"><label for="CLT" align="right"  style="padding-right: 10px; font-family: 'Marko One', serif; font-weight: bold;"> CLT</label>
                                     <input name="contratacao" type="radio" value="PJ" id="F"><label for="PJ" align="right" style="font-family: 'Marko One', serif; font-weight: bold;"> PJ</label>                                  
                                 </select>
                             </div>
+                            
                         </div>
 
-                        <div class="col-md">
+                        
+                        
+                    
+                    <br>
+                    
+
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Data Inicial:</label>
+                            <input type="date" class="form-control" name="data_inicial"> 
+                            
+                        </div>
+
+                        <div class="col-md-6">
                             <label>Data final:</label>
                             <input type="date" class="form-control" name="data_final"> 
                             
                         </div>
-                        
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md">
-                            <label>Empresa:</label>
-                            <input disabled type="text" class="form-control" value="{{empresa.nome}}">
-                            <!-- <select name="empresa" class="form-select">
-                                {% for empresa_iter in empresas %}                                
-                                    <option {% if empresa.id == empresa_iter.id %} selected {% endif %} value="{{empresa_iter.id}}">{{empresa_iter}}</option>
-                                {% endfor %}
-                            </select> -->
-                        </div>
-       
-                    </div>
-
-                    <br>
-                    <div class="row">
-                        <div class="col-md">
+                        <!-- <div class="col-md">
                             <label>Status:</label>
                             <select name="status" class="form-select">     
                                 <option value="I">Interesse</option>
@@ -229,12 +248,12 @@
                                 <option value="D">Desafio técnico</option>    
                                 <option value="F">Finalizado</option>          
                             </select>
-                        </div>
+                        </div> -->
        
                     </div>
                     <br>
-                    <input type="submit" value="Nova empresa" class="btn btn-lg btn-orange">
-
+                    <input type="submit" value="Salvar" class="btn btn-lg btn-orange">
+                </div>
                 </form>
             </div>
            

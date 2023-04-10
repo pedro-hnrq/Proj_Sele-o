@@ -1,3 +1,5 @@
+from datetime import date, timezone
+import datetime
 from django.db import models
 
 
@@ -18,6 +20,10 @@ class Profissao(models.Model):
 
     def __str__(self):
         return self.profissao 
+    
+    class Meta:
+        verbose_name = 'Profissao'
+        verbose_name_plural = 'Profissoes'
 
 class Empresa(models.Model):    
     
@@ -48,7 +54,7 @@ class Empresa(models.Model):
    
 
 class Vagas(models.Model):
-    choices_experiencia = (
+    tipo_experiencia = (
         ('TE', 'Trainee/Estagiário'),
         ('J', 'Júnior'),
         ('P', 'Pleno'),
@@ -56,36 +62,63 @@ class Vagas(models.Model):
         ('E', 'Especialista'),
         ('L', 'Líder')
     )
-    contratacao = models.CharField(max_length=3)
-    choices_tipo_trabalho = (
+    
+    tipo_trabalho = (
         ('P', 'Presencial'),
         ('H', 'Híbrido'),
         ('R', 'Remoto'),
     )
-
-    choices_status = (
-        ('I', 'Interesse'),
-        ('C', 'Currículo enviado'),
-        ('E', 'Entrevista'),
-        ('D', 'Desafio técnico'),
-        ('F', 'Finalizado')
+    
+    tipo_contratacao = (
+        ('CLT', 'CLT'),
+        ('PJ', 'PJ'),
     )
 
+    # choices_status = (
+    #     ('I', 'Interesse'),
+    #     ('C', 'Currículo enviado'),
+    #     ('E', 'Entrevista'),
+    #     ('D', 'Desafio técnico'),
+    #     ('F', 'Finalizado')
+    # )
+    # titulo = models.CharField(max_length=30)
+
     empresa = models.ForeignKey(Empresa, null=True, on_delete=models.SET_NULL)
-    titulo = models.CharField(max_length=30)
-    nivel_experiencia = models.CharField(
-        max_length=2, choices=choices_experiencia)
-    data_final = models.DateField()
     email = models.EmailField()
-    status = models.CharField(max_length=30, choices=choices_status)
-    tecnologias_dominadas = models.ManyToManyField(Tecnologias)
-    tecnologias_estudar = models.ManyToManyField(
-        Tecnologias, related_name='estudar')
+    
+    data_inicial = models.DateField(default=date.today)
+    data_final = models.DateField()
+    
+    nivel_experiencia = models.CharField(max_length=2, choices=tipo_experiencia)
+    trabalho = models.CharField(max_length=3, choices=tipo_trabalho)
+    contratacao = models.CharField(max_length=3, choices=tipo_contratacao)
+    
+    profissao_vaga = models.ForeignKey(Profissao, null=True, on_delete=models.SET_NULL)
+    tecnologia_vaga = models.ManyToManyField(Tecnologias, related_name='estudar')
+   
+    # status = models.CharField(max_length=30, choices=choices_status)
+    # tecnologias_dominadas = models.ManyToManyField(Tecnologias)
+    # tecnologias_estudar = models.ManyToManyField(
+    #     Tecnologias, related_name='estudar')
+
+    def remuneracao(self):
+        return f"R$ {self.remuneracao_profissional:.2f}"
+
+    remuneracao_profissional = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        if self.data_inicial < timezone.now().date():
+            raise ValueError("Data inicial não pode ser anterior à data atual.")
+        super(Vagas, self).save(*args, **kwargs)
+
+
+
 
     # Tem como fazer a BARRA DE PROGRESSÃO 2 formas
     def progresso(self):
 
         # 1 forma
+        
         # if self.status == "I":
         #     return 20
         # elif self.status == "C":
@@ -103,7 +136,7 @@ class Vagas(models.Model):
         return x
 
     def __str__(self):
-        return self.titulo
+        return self.empresa
 
     class Meta:
         verbose_name = 'Vaga'
